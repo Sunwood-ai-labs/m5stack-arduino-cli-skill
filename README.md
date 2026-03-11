@@ -65,6 +65,25 @@ Use the bundled starter sketch when you need a first flash check or a clean deve
 examples/m5core2/hello/hello.ino
 ```
 
+## Direct Arduino CLI Commands
+
+Use these commands when you want to show the exact `arduino-cli` flow instead of the helper scripts:
+
+```powershell
+$cli = "C:\Users\<User>\AppData\Local\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe"
+
+& $cli board attach -p COM11 -b esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+& $cli compile .\examples\m5core2\hello
+& $cli upload -p COM11 .\examples\m5core2\hello
+```
+
+If you want each command to be explicit and not rely on `sketch.yaml`, use:
+
+```powershell
+& $cli compile --fqbn esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+& $cli upload -p COM11 --fqbn esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+```
+
 ## Included Files
 
 | Path | Purpose |

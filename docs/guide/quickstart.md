@@ -33,16 +33,26 @@ arduino-cli core update-index
 arduino-cli core install esp32:esp32
 arduino-cli lib install M5GFX
 arduino-cli lib install M5Unified
-arduino-cli board attach -p COM11 -b esp32:esp32:m5stack_core2 D:\Prj\M5\VerifyCore2
-arduino-cli compile D:\Prj\M5\VerifyCore2
-arduino-cli upload -p COM11 D:\Prj\M5\VerifyCore2
+arduino-cli board attach -p COM11 -b esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+arduino-cli compile .\examples\m5core2\hello
+arduino-cli upload -p COM11 .\examples\m5core2\hello
 ```
 
 ## Bundled Helpers
 
 ```powershell
-.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2-hello -Port COM11
-.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2-hello -Port COM11
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
+```
+
+## Direct Compile And Upload
+
+```powershell
+$cli = "C:\Users\<User>\AppData\Local\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe"
+
+& $cli board attach -p COM11 -b esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+& $cli compile .\examples\m5core2\hello
+& $cli upload -p COM11 .\examples\m5core2\hello
 ```
 
 ## Good Defaults

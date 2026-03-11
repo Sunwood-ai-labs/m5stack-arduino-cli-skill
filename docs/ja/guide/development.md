@@ -43,6 +43,22 @@ examples/m5core2/hello/hello.ino
 
 このスクリプトはコンパイルとアップロードをまとめて行います。
 
+## 開発中に `arduino-cli` を直接使う例
+
+```powershell
+$cli = "C:\Users\<User>\AppData\Local\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe"
+
+& $cli compile .\examples\m5core2\hello
+& $cli upload -p COM11 .\examples\m5core2\hello
+```
+
+まだ `attach` していないなら、毎回 FQBN を明示します。
+
+```powershell
+& $cli compile --fqbn esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+& $cli upload -p COM11 --fqbn esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+```
+
 ## 推奨する開発ループ
 
 1. 新しいスケッチでは最初にセットアップ補助を流す

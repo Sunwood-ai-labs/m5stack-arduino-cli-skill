@@ -48,6 +48,32 @@ Use this skill to work with M5Stack boards from Arduino CLI on Windows, especial
 - Use [examples/m5core2/hello/hello.ino](./examples/m5core2/hello/hello.ino) as the default sample sketch for setup checks and first-flash validation.
 - Add future examples under `examples/<board>/<sample>/` and future board setup flows under `scripts/setup/`.
 
+## Canonical command examples
+
+Use these command shapes when writing guidance for users:
+
+```powershell
+$cli = "C:\Users\<User>\AppData\Local\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe"
+
+& $cli board attach -p COM11 -b esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+& $cli compile .\examples\m5core2\hello
+& $cli upload -p COM11 .\examples\m5core2\hello
+```
+
+When you need explicit board selection on each command:
+
+```powershell
+& $cli compile --fqbn esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+& $cli upload -p COM11 --fqbn esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+```
+
+When you want to show the helper-script path as well:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
+```
+
 ## Read references as needed
 
 - Read [references/windows-setup-and-diagnosis.md](./references/windows-setup-and-diagnosis.md) for the Windows and Arduino CLI workflow, command checklist, and explanation of `Unknown`.

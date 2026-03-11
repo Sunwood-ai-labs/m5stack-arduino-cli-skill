@@ -43,6 +43,22 @@ This helper:
 
 This helper compiles and uploads the sketch with attached settings or explicit arguments.
 
+## Direct CLI Commands For Development
+
+```powershell
+$cli = "C:\Users\<User>\AppData\Local\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe"
+
+& $cli compile .\examples\m5core2\hello
+& $cli upload -p COM11 .\examples\m5core2\hello
+```
+
+Use explicit board selection when the sketch is not attached yet:
+
+```powershell
+& $cli compile --fqbn esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+& $cli upload -p COM11 --fqbn esp32:esp32:m5stack_core2 .\examples\m5core2\hello
+```
+
 ## Suggested Development Loop
 
 1. Run the setup helper once for a new sketch.
