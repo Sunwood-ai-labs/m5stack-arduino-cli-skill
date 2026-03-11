@@ -19,18 +19,39 @@ Use this reference when you need to go beyond a one-off diagnosis and support a 
 .\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
 ```
 
+For SD card validation with file write and remaining-capacity checks:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+```
+
 ## Sample upload command
 
 ```powershell
 .\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
 ```
 
-## What the sample sketch demonstrates
+For the SD card sample:
+
+```powershell
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+```
+
+## What the sample sketches demonstrate
+
+`examples/m5core2/hello/hello.ino` demonstrates:
 
 - `M5Unified` initialization
 - `M5GFX` backed display output through `M5.Display`
 - a serial boot message for quick monitor checks
 - a simple button-triggered state change
+
+`examples/m5core2/sd_text_write/sd_text_write.ino` demonstrates:
+
+- mounting the microSD card on M5Core2 with the expected SPI chip select pin
+- creating a text file on the SD card and appending lines with Button A
+- reading the file back to the display and serial monitor with Button B
+- showing free and total SD card capacity so the board can double as a storage check
 
 ## Development support expectations
 

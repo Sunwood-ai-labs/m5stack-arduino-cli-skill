@@ -45,6 +45,13 @@ arduino-cli upload -p COM11 .\examples\m5core2\hello
 .\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
 ```
 
+SD カード確認用:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+```
+
 ## 既定値
 
 - M5Core2 の FQBN: `esp32:esp32:m5stack_core2`

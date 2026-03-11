@@ -45,6 +45,13 @@ arduino-cli upload -p COM11 .\examples\m5core2\hello
 .\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
 ```
 
+For an SD card check that writes a text file and shows remaining capacity:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+```
+
 ## Direct Compile And Upload
 
 ```powershell
@@ -61,6 +68,7 @@ $cli = "C:\Users\<User>\AppData\Local\Programs\Arduino IDE\resources\app\lib\bac
 - Common bridge names: `USB-Enhanced-SERIAL CH9102`, `Silicon Labs CP210x USB to UART Bridge`
 - Common libraries: `M5Unified`, `M5GFX`
 - Default example sketch: `examples/m5core2/hello/hello.ino`
+- SD card check sketch: `examples/m5core2/sd_text_write/sd_text_write.ino`
 
 ## Next Step
 

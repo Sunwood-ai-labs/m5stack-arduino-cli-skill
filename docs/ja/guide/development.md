@@ -12,6 +12,17 @@
 examples/m5core2/hello/hello.ino
 ```
 
+SD カード確認用サンプル:
+
+```text
+examples/m5core2/sd_text_write/sd_text_write.ino
+```
+
+- microSD のマウント
+- テキストファイルの作成と追記
+- 画面とシリアルでの読み戻し
+- 空き容量と総容量の表示
+
 このスケッチでは次を確認できます。
 
 - `M5Unified` の初期化
@@ -41,6 +52,13 @@ examples/m5core2/hello/hello.ino
 .\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
 ```
 
+SD カード確認用:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+```
+
 このスクリプトはコンパイルとアップロードをまとめて行います。
 
 ## 開発中に `arduino-cli` を直接使う例
@@ -50,6 +68,13 @@ $cli = "C:\Users\<User>\AppData\Local\Programs\Arduino IDE\resources\app\lib\bac
 
 & $cli compile .\examples\m5core2\hello
 & $cli upload -p COM11 .\examples\m5core2\hello
+```
+
+SD カード確認用:
+
+```powershell
+& $cli compile .\examples\m5core2\sd_text_write
+& $cli upload -p COM11 .\examples\m5core2\sd_text_write
 ```
 
 まだ `attach` していないなら、毎回 FQBN を明示します。

@@ -19,6 +19,19 @@ It demonstrates:
 - serial boot logging
 - button handling for a tiny interaction loop
 
+The SD card validation sample lives here:
+
+```text
+examples/m5core2/sd_text_write/sd_text_write.ino
+```
+
+It demonstrates:
+
+- mounting the microSD card on M5Core2
+- creating and appending a text file on the card
+- reading the file back on screen and over serial
+- showing free and total SD card capacity for a quick storage check
+
 ## Helper Scripts
 
 ### Setup helper
@@ -43,6 +56,13 @@ This helper:
 
 This helper compiles and uploads the sketch with attached settings or explicit arguments.
 
+To run the SD card validation sample instead:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+```
+
 ## Direct CLI Commands For Development
 
 ```powershell
@@ -50,6 +70,13 @@ $cli = "C:\Users\<User>\AppData\Local\Programs\Arduino IDE\resources\app\lib\bac
 
 & $cli compile .\examples\m5core2\hello
 & $cli upload -p COM11 .\examples\m5core2\hello
+```
+
+For the SD card sample:
+
+```powershell
+& $cli compile .\examples\m5core2\sd_text_write
+& $cli upload -p COM11 .\examples\m5core2\sd_text_write
 ```
 
 Use explicit board selection when the sketch is not attached yet:

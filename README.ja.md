@@ -53,6 +53,22 @@
 examples/m5core2/hello/hello.ino
 ```
 
+SD カード確認用サンプル:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+```
+
+```text
+examples/m5core2/sd_text_write/sd_text_write.ino
+```
+
+- microSD のマウント
+- テキストファイルの作成と追記
+- 画面とシリアルでの読み戻し
+- 空き容量と総容量の表示
+
 このスケッチは `M5Unified` を使って画面表示とシリアル出力を行い、ボタン A を押したときの状態変化も確認できます。
 
 ## クイックスタート

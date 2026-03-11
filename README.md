@@ -65,6 +65,24 @@ Use the bundled starter sketch when you need a first flash check or a clean deve
 examples/m5core2/hello/hello.ino
 ```
 
+Use the SD card validation sample when you want to confirm that a microSD card can be mounted, written, read back, and checked for remaining capacity:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
+```
+
+```text
+examples/m5core2/sd_text_write/sd_text_write.ino
+```
+
+That sample demonstrates:
+
+- SD card mount with `SD.begin(GPIO_NUM_4, SPI, 25000000)`
+- creating and appending a text log file on the card
+- reading the file back to the display and serial monitor
+- showing free and total SD card capacity on screen
+
 ## Direct Arduino CLI Commands
 
 Use these commands when you want to show the exact `arduino-cli` flow instead of the helper scripts:
@@ -93,6 +111,7 @@ If you want each command to be explicit and not rely on `sketch.yaml`, use:
 | [`scripts/setup-m5core2.ps1`](./scripts/setup-m5core2.ps1) | PowerShell helper for CLI discovery, ESP32 setup, library install, and board attach |
 | [`scripts/upload-m5core2.ps1`](./scripts/upload-m5core2.ps1) | PowerShell helper for compile and upload |
 | [`examples/m5core2/hello/hello.ino`](./examples/m5core2/hello/hello.ino) | Sample M5Core2 sketch for first flash and development |
+| [`examples/m5core2/sd_text_write/sd_text_write.ino`](./examples/m5core2/sd_text_write/sd_text_write.ino) | Sample M5Core2 sketch for SD card text write, readback, and free-space checks |
 | [`docs/`](./docs/) | Bilingual VitePress docs for browsing the workflow as a site |
 | [`references/windows-setup-and-diagnosis.md`](./references/windows-setup-and-diagnosis.md) | Windows commands, setup flow, and `Unknown` troubleshooting |
 | [`references/m5-board-notes.md`](./references/m5-board-notes.md) | M5-specific board notes, bridge-chip context, and FQBN defaults |
@@ -156,7 +175,8 @@ The repository now uses a growth-friendly structure:
 |   `-- ja/
 |-- examples/
 |   `-- m5core2/
-|       `-- hello/
+|       |-- hello/
+|       `-- sd_text_write/
 |-- scripts/
 |   |-- common/
 |   |-- setup/
