@@ -14,6 +14,7 @@ Use Arduino CLI on Windows to set up an M5Stack board, identify its COM port, at
 6. Verify the device with `esptool` if board auto-detection is `Unknown`.
 7. Attach board + port to the sketch.
 8. Compile and upload.
+9. Reuse helper scripts when the user needs a repeatable local workflow.
 
 ## Typical Windows commands
 
@@ -88,6 +89,15 @@ This writes `sketch.yaml` and makes later compile/upload commands simpler.
 ```
 
 If the sketch is already attached, `compile` can use the stored FQBN automatically.
+
+## Helper scripts in this repository
+
+When the skill is used from this repository, prefer these reusable entry points:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
+```
 
 ## Interpret `Unknown` correctly
 

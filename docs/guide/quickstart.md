@@ -2,14 +2,12 @@
 
 ## What This Skill Solves
 
-Use this skill when an M5Stack board is connected to Windows but `arduino-cli board list`
-still reports the board as `Unknown`, or when you need Codex to attach the correct board
-profile before compiling or uploading.
+Use this skill when an M5Stack board is connected to Windows but `arduino-cli board list` still reports the board as `Unknown`, or when you want Codex to set up, attach, and flash the correct board profile before development starts.
 
 ## Recommended Prompt
 
 ```text
-Use $m5stack-arduino-cli to diagnose why my M5Core2 shows Unknown in arduino-cli board list on Windows and attach the correct FQBN.
+Use $m5stack-arduino-cli to set up my M5Core2 on Windows, attach the correct FQBN, and upload a sample sketch from Arduino CLI.
 ```
 
 ## Default Workflow
@@ -19,8 +17,9 @@ Use $m5stack-arduino-cli to diagnose why my M5Core2 shows Unknown in arduino-cli
 3. Ensure the ESP32 core is configured and installed.
 4. Identify the current COM port from Windows and `arduino-cli board list`.
 5. Treat `Unknown` as an auto-identification limit unless transport checks fail too.
-6. Attach the intended FQBN and port to the sketch.
-7. Compile and upload with the attached configuration.
+6. Install `M5GFX` and `M5Unified` when the sketch uses M5 libraries.
+7. Attach the intended FQBN and port to the sketch.
+8. Compile and upload with the attached configuration.
 
 ## High-Value Commands
 
@@ -32,9 +31,18 @@ Get-PnpDevice -PresentOnly | Where-Object { $_.Class -in @('Ports','USB') } |
 arduino-cli board list
 arduino-cli core update-index
 arduino-cli core install esp32:esp32
+arduino-cli lib install M5GFX
+arduino-cli lib install M5Unified
 arduino-cli board attach -p COM11 -b esp32:esp32:m5stack_core2 D:\Prj\M5\VerifyCore2
 arduino-cli compile D:\Prj\M5\VerifyCore2
 arduino-cli upload -p COM11 D:\Prj\M5\VerifyCore2
+```
+
+## Bundled Helpers
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2-hello -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2-hello -Port COM11
 ```
 
 ## Good Defaults
@@ -42,7 +50,8 @@ arduino-cli upload -p COM11 D:\Prj\M5\VerifyCore2
 - M5Core2 FQBN: `esp32:esp32:m5stack_core2`
 - Common bridge names: `USB-Enhanced-SERIAL CH9102`, `Silicon Labs CP210x USB to UART Bridge`
 - Common libraries: `M5Unified`, `M5GFX`
+- Default example sketch: `examples/m5core2/hello/hello.ino`
 
 ## Next Step
 
-Move to [Diagnosis Playbook](/guide/diagnosis) when you need a more detailed decision tree.
+Move to [Diagnosis Playbook](/guide/diagnosis) when you need a more detailed decision tree, or to [Development Support](/guide/development) when you want sample sketches and repeatable helper scripts.

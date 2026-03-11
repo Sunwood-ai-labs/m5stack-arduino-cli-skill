@@ -18,6 +18,7 @@ This is the normal workflow:
 3. Set the FQBN manually.
 4. Attach the board to the sketch.
 5. Upload.
+6. Keep the sketch and helper scripts around for later development work.
 
 ## M5Core2
 

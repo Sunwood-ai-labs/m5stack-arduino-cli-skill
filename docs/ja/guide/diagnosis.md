@@ -2,70 +2,64 @@
 
 ## まず押さえる解釈
 
-`arduino-cli board list` には、別々の 2 段階があります。
+`arduino-cli board list` は次の 2 つを別々に行います。
 
 1. ポートを見つける
-2. ボード種別を推定する
+2. ボード型番を推定する
 
-M5Stack では、Windows から見えるのが汎用 USB-シリアルブリッジだけということがよくあります。
-そのため、ポート検出は正常でもボード名推定だけが `Unknown` のまま残ることがあります。
+M5Stack は Windows から見ると汎用の USB シリアルブリッジとして見えることが多く、その場合はポート検出が正常でもボード名は `Unknown` のままになります。
 
-## 判断フロー
+## 切り分けの流れ
 
-### 1. Windows が正常なポートとして見ているか
-
-まずデバイス状態を確認します。
+### 1. Windows は正常なポートとして見ているか
 
 ```powershell
 Get-PnpDevice -PresentOnly | Where-Object { $_.Class -in @('Ports','USB') } |
   Select-Object Class,FriendlyName,Status,InstanceId
 ```
 
-対象デバイスが存在し、`Status` が `OK` なら、USB 通信経路は概ね健全です。
+対象デバイスが存在し、`Status` が `OK` なら、USB 輸送層は概ね正常です。
 
-### 2. `arduino-cli` がポートを見つけられるか
+### 2. `arduino-cli` はポートを見つけられるか
 
 ```powershell
 arduino-cli board list
 arduino-cli board list --format json
 ```
 
-COM ポートが見えていてボード名だけ空なら、まずは識別不足と考えます。即座に
-ドライバ不良と決めつけないのが重要です。
+COM ポートは見えているのにボード名だけ出ない場合は、まず自動識別の不足として扱います。
 
-### 3. ESP32 コアが入っているか
+### 3. ESP32 コアは入っているか
 
 ```powershell
 arduino-cli core update-index
 arduino-cli core install esp32:esp32
 ```
 
-ESP32 コアが無いと、attach、compile、upload の判断が途中で止まります。
+ESP32 コアがないと、`attach`、コンパイル、アップロードは揃いません。
 
-### 4. `esptool` でチップに話せるか
+### 4. `esptool` で ESP32 と会話できるか
 
 ```powershell
 & "C:\Users\<User>\AppData\Local\Arduino15\packages\esp32\tools\esptool_py\5.1.0\esptool.exe" --chip auto --port COM11 chip-id
 ```
 
-ここで ESP32 系チップが応答すれば、ボード名が `Unknown` でもポートの実体はかなり確度高く
-証明できます。
+ここで ESP32 として応答すれば、`Unknown` でも実機との通信は取れています。
 
-### 5. 想定 FQBN を明示的にアタッチする
+### 5. 想定ボードを明示的に `attach` する
 
 ```powershell
 arduino-cli board attach -p COM11 -b esp32:esp32:m5stack_core2 D:\Prj\M5\VerifyCore2
 ```
 
-この手順で、汎用シリアルブリッジとして見えている状態と、実際に使いたいボード設定を接続します。
+これで汎用 USB シリアルブリッジと、実際に使いたいボード設定の間を橋渡しできます。
 
-## 最初にやらない方がよいこと
+## 最初にやらないこと
 
-- Windows が正常表示なのに、いきなりドライバを再インストールしない
-- `Unknown` だけを根拠に、ケーブル不良や接続断を断定しない
-- ボードが明らかなのに attach を飛ばして先へ進まない
+- Windows が正常にポートを出しているのに、いきなりドライバ再インストールを勧めない
+- `Unknown` だけを根拠にケーブル不良やドライバ不足と断定しない
+- ボードが分かっているのに `attach` を飛ばさない
 
-## 関連リファレンス
+## 開発フェーズへ進む
 
-- [Windows Setup And Diagnosis](https://github.com/Sunwood-ai-labs/m5stack-arduino-cli-skill/blob/main/references/windows-setup-and-diagnosis.md)
-- [M5 Board Notes](https://github.com/Sunwood-ai-labs/m5stack-arduino-cli-skill/blob/main/references/m5-board-notes.md)
+診断が安定したら、[開発支援](/ja/guide/development) に進み、サンプルスケッチと補助スクリプトを使って再現可能な CLI フローへ移ります。

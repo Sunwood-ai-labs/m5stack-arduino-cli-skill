@@ -5,7 +5,7 @@ const repoName = "m5stack-arduino-cli-skill";
 export default defineConfig({
   title: "M5Stack Arduino CLI Skill",
   description:
-    "Codex skill docs for setting up and troubleshooting M5Stack boards with Arduino CLI on Windows.",
+    "Codex skill docs for setting up, flashing, and developing with M5Stack boards from Arduino CLI on Windows.",
   base: `/${repoName}/`,
   cleanUrls: true,
   lastUpdated: true,
@@ -32,6 +32,8 @@ export default defineConfig({
         nav: [
           { text: "Guide", link: "/guide/quickstart" },
           { text: "Diagnosis", link: "/guide/diagnosis" },
+          { text: "Development", link: "/guide/development" },
+          { text: "Structure", link: "/guide/structure" },
           { text: "GitHub", link: "https://github.com/Sunwood-ai-labs/m5stack-arduino-cli-skill" }
         ],
         sidebar: [
@@ -39,7 +41,9 @@ export default defineConfig({
             text: "Guide",
             items: [
               { text: "Quick Start", link: "/guide/quickstart" },
-              { text: "Diagnosis Playbook", link: "/guide/diagnosis" }
+              { text: "Diagnosis Playbook", link: "/guide/diagnosis" },
+              { text: "Development Support", link: "/guide/development" },
+              { text: "Repository Structure", link: "/guide/structure" }
             ]
           }
         ],
@@ -67,6 +71,8 @@ export default defineConfig({
         nav: [
           { text: "ガイド", link: "/ja/guide/quickstart" },
           { text: "診断", link: "/ja/guide/diagnosis" },
+          { text: "開発支援", link: "/ja/guide/development" },
+          { text: "構成", link: "/ja/guide/structure" },
           { text: "GitHub", link: "https://github.com/Sunwood-ai-labs/m5stack-arduino-cli-skill" }
         ],
         sidebar: [
@@ -74,7 +80,9 @@ export default defineConfig({
             text: "ガイド",
             items: [
               { text: "クイックスタート", link: "/ja/guide/quickstart" },
-              { text: "診断プレイブック", link: "/ja/guide/diagnosis" }
+              { text: "診断プレイブック", link: "/ja/guide/diagnosis" },
+              { text: "開発支援", link: "/ja/guide/development" },
+              { text: "リポジトリ構成", link: "/ja/guide/structure" }
             ]
           }
         ],

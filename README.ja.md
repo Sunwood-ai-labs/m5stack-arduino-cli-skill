@@ -1,7 +1,7 @@
 <div align="center">
   <img src="./assets/m5stack-arduino-cli-icon.svg" alt="M5Stack Arduino CLI icon" width="140" height="140">
   <h1>M5Stack Arduino CLI Skill</h1>
-  <p><strong>Windows 上で M5Stack を Arduino CLI からセットアップ・診断・運用するための Codex 向けスキルです。</strong></p>
+  <p><strong>Windows 上で M5Stack を Arduino CLI だけでセットアップ、書き込み、診断、開発支援するための Codex スキルです。</strong></p>
   <p>
     <img src="https://img.shields.io/badge/Platform-Windows_10%2B-0A7E8C?style=flat-square" alt="Windows badge">
     <img src="https://img.shields.io/badge/Tool-Arduino_CLI-1B5E20?style=flat-square" alt="Arduino CLI badge">
@@ -13,108 +13,99 @@
 
 ## ドキュメント
 
-- 閲覧用サイト: [sunwood-ai-labs.github.io/m5stack-arduino-cli-skill](https://sunwood-ai-labs.github.io/m5stack-arduino-cli-skill/)
-- 英語版クイックスタート: [`docs/guide/quickstart.md`](./docs/guide/quickstart.md)
-- 日本語版クイックスタート: [`docs/ja/guide/quickstart.md`](./docs/ja/guide/quickstart.md)
+- ドキュメントサイト: [Sunwood-ai-labs.github.io/m5stack-arduino-cli-skill](https://sunwood-ai-labs.github.io/m5stack-arduino-cli-skill/)
+- 英語クイックスタート: [`docs/guide/quickstart.md`](./docs/guide/quickstart.md)
+- 日本語クイックスタート: [`docs/ja/guide/quickstart.md`](./docs/ja/guide/quickstart.md)
 
 ## 概要
 
-このリポジトリは、Windows 上で `arduino-cli` を使って M5Stack を扱う際の定番トラブルを
-Codex が迷わずさばけるようにするための再利用可能なスキルです。特に、
-`arduino-cli board list` で `Unknown` と表示されるケースや、USB シリアルブリッジが
-汎用デバイスとして見えているケース、適切な ESP32 の FQBN がまだスケッチに紐づいて
-いないケースを主対象にしています。
+このリポジトリは、Windows 上で `arduino-cli` を使って M5Stack を扱うための再利用可能な Codex スキルです。特に次のような場面を狙っています。
 
-このスキルは「まずデバイスの健全性を証明し、そのうえで正しい COM ポートと FQBN を
-結びつける」ことを重視しています。無駄なドライバ再インストールを避けながら、
-コンパイルやアップロード成功まで最短で戻すための流れを用意しています。
+- `arduino-cli board list` で `Unknown` と出る
+- USB シリアルブリッジが `CH9102` や `CP210x` として見えている
+- 正しい ESP32 の FQBN がまだスケッチに紐づいていない
+- セットアップから書き込み、開発の初期化まで一気に進めたい
+
+このスキルは単発のトラブルシュートだけでなく、日常的な開発支援も前提にしています。COM ポートの切り分け、ESP32 コア導入、M5 系ライブラリの導入、`board attach`、コンパイル、アップロードまでを CLI ベースで再現可能な流れにまとめています。
 
 ## このスキルでできること
 
-- `arduino-cli board list` が COM ポートを見つけていても `Unknown` になる理由を説明する
-- `CH9102` や `CP210x` のような Windows 上の汎用 USB-シリアルブリッジを前提に診断する
-- `arduino-cli`、`esptool`、Windows のデバイス情報を正しい順番で使うよう Codex を誘導する
-- M5Core2 の既定 FQBN や `M5GFX`、`M5Unified` といった代表ライブラリを案内する
+- `Unknown` の意味を正しく切り分ける
+- Windows 側で COM ポートとドライバ状態を確認する
+- `arduino-cli` と Arduino IDE 同梱版 CLI の両方に対応する
+- `esp32:esp32:m5stack_core2` などの FQBN を明示的に付与する
+- `M5Unified` と `M5GFX` を導入する
+- サンプルスケッチを使って最初の書き込み確認を行う
+- CLI だけで M5Stack 開発フローを回せる形に整える
+
+## サンプルスクリプトとサンプルスケッチ
+
+セットアップと書き込みには、同梱の PowerShell スクリプトを使えます。
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\hello -Port COM11
+```
+
+最小の確認用スケッチはここにあります。
+
+```text
+examples/m5core2/hello/hello.ino
+```
+
+このスケッチは `M5Unified` を使って画面表示とシリアル出力を行い、ボタン A を押したときの状態変化も確認できます。
 
 ## クイックスタート
 
-Codex に対して、スキル名を明示して依頼します。
+Codex に明示的にスキルを使わせるなら、たとえばこう依頼できます。
 
 ```text
-Use $m5stack-arduino-cli to diagnose why my M5Core2 shows Unknown in arduino-cli board list on Windows and attach the correct FQBN.
+Use $m5stack-arduino-cli to set up my M5Core2 on Windows, attach the correct FQBN, and upload a sample sketch from Arduino CLI.
 ```
 
-スキルは次の流れで作業を進めます。
+スキルは次の順で進めます。
 
-1. Windows が対象デバイスをシリアルポートとして認識しているか確認する
-2. `arduino-cli` を見つける。`PATH` に無ければ Arduino IDE 同梱版も探す
-3. `esp32:esp32` のボードサポートが入っているか確認する
-4. Windows ツールと `arduino-cli board list` で正しい COM ポートを特定する
-5. `Unknown` は、Windows 側や `esptool` 側も失敗していない限り「自動識別の不足」とみなす
-6. コンパイルやアップロードの前に、正しい FQBN とポートをスケッチへ紐づける
+1. Windows がシリアルデバイスとして認識しているか確認する
+2. `arduino-cli` を見つける
+3. ESP32 コアを導入する
+4. 正しい COM ポートを見つける
+5. `Unknown` を自動識別の限界として扱うべきか判定する
+6. `M5GFX` と `M5Unified` を必要に応じて導入する
+7. スケッチに FQBN とポートを `board attach` する
+8. コンパイルとアップロードを行う
 
-## 収録ファイル
+## 主なファイル
 
 | パス | 役割 |
 | --- | --- |
-| [`SKILL.md`](./SKILL.md) | スキル本体の指示、ルール、標準ワークフロー |
-| [`agents/openai.yaml`](./agents/openai.yaml) | 表示名や既定プロンプトなどのエージェント向けメタデータ |
-| [`docs/`](./docs/) | ブラウズ可能な英日 VitePress ドキュメント |
-| [`references/windows-setup-and-diagnosis.md`](./references/windows-setup-and-diagnosis.md) | Windows コマンド、セットアップ手順、`Unknown` 診断の詳細 |
-| [`references/m5-board-notes.md`](./references/m5-board-notes.md) | M5 系ボード特有の事情、ブリッジチップの背景、FQBN 既定値 |
+| [`SKILL.md`](./SKILL.md) | スキル本体。発火条件、実行ルール、参照先 |
+| [`agents/openai.yaml`](./agents/openai.yaml) | UI 向けメタデータ |
+| [`scripts/setup-m5core2.ps1`](./scripts/setup-m5core2.ps1) | セットアップ、ライブラリ導入、`board attach` を補助 |
+| [`scripts/upload-m5core2.ps1`](./scripts/upload-m5core2.ps1) | コンパイルとアップロードを補助 |
+| [`examples/m5core2/hello/hello.ino`](./examples/m5core2/hello/hello.ino) | M5Core2 向けサンプルスケッチ |
+| [`docs/`](./docs/) | 英日対応の VitePress ドキュメント |
+| [`references/windows-setup-and-diagnosis.md`](./references/windows-setup-and-diagnosis.md) | Windows / Arduino CLI のセットアップと切り分け |
+| [`references/m5-board-notes.md`](./references/m5-board-notes.md) | M5 固有のボードメモ |
+| [`references/development-and-examples.md`](./references/development-and-examples.md) | 開発支援とサンプル利用の流れ |
 
-## ワークフローの要点
+## 今後の拡張方針
 
-### `Unknown` を正しく扱う
+今後サンプルを増やしやすいように、構成を次のルールへ寄せました。
 
-このスキルは、次の 2 つを明確に分けて扱います。
+- ボード別サンプルは `examples/<board>/<sample>/`
+- 共通 PowerShell 処理は `scripts/common/`
+- ボード別セットアップは `scripts/setup/`
+- 汎用アップロードは `scripts/upload/`
+- ユーザーが直接使う短い入口はトップレベルのラッパー
 
-- ポート検出
-- ボード識別
+## こんなときに使う
 
-M5Stack 系では、Windows から見える USB 識別子がボード固有ではなく汎用 USB-シリアル
-ブリッジ側の情報であることがよくあります。そのため、COM ポートとしては正常でも、
-Arduino CLI がボード名を自動判定できず `Unknown` になることがあります。
-
-### 推測より検証を優先する
-
-スキルは闇雲なドライバ再インストールを勧めません。代わりに、Codex に次を確認させます。
-
-- Windows のデバイス状態
-- シリアルポートの可視性
-- ESP32 パッケージの導入状況
-- 必要に応じた `esptool` の疎通確認
-- 想定ボードとポートのアタッチ状況
-
-## リポジトリ構成
-
-```text
-.
-|-- SKILL.md
-|-- README.md
-|-- README.ja.md
-|-- agents/
-|   `-- openai.yaml
-|-- assets/
-|   `-- m5stack-arduino-cli-icon.svg
-|-- docs/
-|   |-- .vitepress/
-|   |-- guide/
-|   `-- ja/
-`-- references/
-    |-- m5-board-notes.md
-    `-- windows-setup-and-diagnosis.md
-```
-
-## 使いどころ
-
-次のような場面で、このリポジトリをスキルとして組み込むと効果的です。
-
-- Windows 上で M5Stack の初期セットアップをしたい
+- Windows で M5Stack を CLI 中心で扱いたい
 - `arduino-cli board list` の `Unknown` を正しく説明したい
-- `esp32:esp32:m5stack_core2` などの FQBN を適切に設定したい
-- スケッチのコンパイルとアップロードを試行錯誤少なめで進めたい
+- M5Core2 用の CLI セットアップを自動化したい
+- 書き込み確認用のサンプルスケッチが欲しい
+- 開発のたびに同じコマンドを組み直したくない
 
 ## ライセンス
 
-このリポジトリは [MIT License](./LICENSE) で提供します。
+このリポジトリは [MIT License](./LICENSE) で公開しています。

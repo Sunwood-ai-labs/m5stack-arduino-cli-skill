@@ -1,4 +1,4 @@
 interface:
   display_name: "M5Stack Arduino CLI"
-  short_description: "Set up, diagnose, and use M5Stack boards from Arduino CLI on Windows."
-  default_prompt: "Use $m5stack-arduino-cli to set up and troubleshoot an M5Stack board with Arduino CLI on Windows."
+  short_description: "Set up, flash, diagnose, and support M5Stack development from Arduino CLI on Windows."
+  default_prompt: "Use $m5stack-arduino-cli to set up, flash, and troubleshoot an M5Stack board with Arduino CLI on Windows."

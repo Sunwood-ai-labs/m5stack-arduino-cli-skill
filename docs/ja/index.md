@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: "M5Stack Arduino CLI Skill"
-  text: "Windows 上の M5Stack と Arduino CLI を推測なしで診断する"
-  tagline: "ボードが `Unknown` と表示されても、正しいポート確認と FQBN 設定までたどり着けるようにする Codex スキルの日本語ドキュメントです。"
+  text: "Windows で M5Stack を迷わずセットアップして書き込み、開発する"
+  tagline: "`Unknown` 表示から正しい COM ポート確認、FQBN 設定、書き込み、開発フローまでを一貫して扱う Codex スキルの日本語ドキュメントです。"
   image:
     src: /icon.svg
     alt: "M5Stack Arduino CLI Skill icon"
@@ -16,26 +16,28 @@ hero:
       text: "診断プレイブック"
       link: "/ja/guide/diagnosis"
     - theme: alt
+      text: "開発支援"
+      link: "/ja/guide/development"
+    - theme: alt
       text: "English"
       link: "/"
 
 features:
-  - title: "`Unknown` を正しく解釈する"
-    details: "COM ポート検出とボード識別を分けて考え、正常な接続を誤って故障扱いしないようにします。"
-  - title: "Windows 前提で診断する"
-    details: "CH9102 や CP210x を含む M5Stack デバイス向けに、`Get-PnpDevice`、`arduino-cli`、`esptool` の使い順を整理しています。"
-  - title: "正しい FQBN に着地する"
-    details: "汎用 USB-シリアルブリッジとして見える状態から、`esp32:esp32:m5stack_core2` のような明示的なボード設定へつなげます。"
+  - title: "`Unknown` を正しく扱う"
+    details: "COM ポート検出とボード自動識別を分けて考え、正常な機器をドライバ不良と誤認しないようにします。"
+  - title: "Windows 前提で切り分ける"
+    details: "`Get-PnpDevice`、`arduino-cli`、`esptool` を順に使い、CH9102 や CP210x ベースの M5Stack を確実に扱います。"
+  - title: "セットアップから開発まで支援する"
+    details: "最初の書き込みだけで終わらず、PowerShell 補助スクリプトとサンプルスケッチで継続的な CLI 開発につなげます。"
 ---
 
-## このサイトで扱う内容
+## このサイトで扱うこと
 
-このドキュメントは、リポジトリの `README` を補完する browsable なガイドです。主眼は、
-「`Unknown` と出る」状態から「正しいポートと FQBN でコンパイル・アップロードできる」
-状態までの判断を再現可能にすることです。
+このドキュメントは README を補完するブラウズ用ガイドです。`Unknown` からセットアップ完了までの流れに加え、サンプルスケッチを使った開発の始め方までをまとめています。
 
-## 主要導線
+## 主な導線
 
-- 最短で使い始めるなら [クイックスタート](/ja/guide/quickstart)
-- 判断の流れをしっかり追うなら [診断プレイブック](/ja/guide/diagnosis)
-- 英語版を見たいときは [English docs](/)
+- 最短で動かしたいなら [クイックスタート](/ja/guide/quickstart)
+- 切り分けを順に追いたいなら [診断プレイブック](/ja/guide/diagnosis)
+- サンプルや補助スクリプトを使って開発まで進めたいなら [開発支援](/ja/guide/development)
+- 英語版を見るなら [English docs](/)
