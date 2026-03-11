@@ -32,6 +32,20 @@ It demonstrates:
 - reading the file back on screen and over serial
 - showing free and total SD card capacity for a quick storage check
 
+The animated cat sample lives here:
+
+```text
+examples/m5core2/pixel_pet/pixel_pet.ino
+```
+
+It demonstrates:
+
+- converting a transparent animated WebP into RGB565 frames for M5Core2
+- fitting each imported frame into a square canvas without distorting aspect ratio
+- preserving transparency while replaying the imported animation on the device
+- using Button A, Button B, and Button C for pet, feed, and sleep or wake reactions
+- keeping extra motion out of the sketch when the source animation already contains motion
+
 ## Helper Scripts
 
 ### Setup helper
@@ -63,6 +77,21 @@ To run the SD card validation sample instead:
 .\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
 ```
 
+To run the animated cat example instead:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+```
+
+To regenerate the animation header and preview artifacts with `uv`:
+
+```powershell
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\tmp\generated_cat_animation_preview.png --sheet .\tmp\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+```
+
+That converter keeps the full frame, fits it into a square canvas, and can emit both a quick preview strip and a sprite sheet for review.
+
 ## Direct CLI Commands For Development
 
 ```powershell
@@ -77,6 +106,13 @@ For the SD card sample:
 ```powershell
 & $cli compile .\examples\m5core2\sd_text_write
 & $cli upload -p COM11 .\examples\m5core2\sd_text_write
+```
+
+For the animated cat sample:
+
+```powershell
+& $cli compile .\examples\m5core2\pixel_pet
+& $cli upload -p COM11 .\examples\m5core2\pixel_pet
 ```
 
 Use explicit board selection when the sketch is not attached yet:

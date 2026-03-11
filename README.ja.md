@@ -71,6 +71,28 @@ examples/m5core2/sd_text_write/sd_text_write.ino
 
 このスケッチは `M5Unified` を使って画面表示とシリアル出力を行い、ボタン A を押したときの状態変化も確認できます。
 
+透過アニメーション WebP を使った猫アニメの例:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+```
+
+```text
+examples/m5core2/pixel_pet/pixel_pet.ino
+```
+
+- 透過アニメーション WebP を M5Core2 用の RGB565 フレーム列へ変換
+- 元の縦横比を保ったまま正方形キャンバスに収める
+- プレビュー画像とスプライトシートを同時に生成して確認できる
+- 元アニメーションをそのまま再生し、ボタン A / B / C で反応だけを切り替える
+
+変換アセットを `uv` で再生成する例:
+
+```powershell
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\tmp\generated_cat_animation_preview.png --sheet .\tmp\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+```
+
 ## クイックスタート
 
 Codex に明示的にスキルを使わせるなら、たとえばこう依頼できます。
@@ -98,7 +120,10 @@ Use $m5stack-arduino-cli to set up my M5Core2 on Windows, attach the correct FQB
 | [`agents/openai.yaml`](./agents/openai.yaml) | UI 向けメタデータ |
 | [`scripts/setup-m5core2.ps1`](./scripts/setup-m5core2.ps1) | セットアップ、ライブラリ導入、`board attach` を補助 |
 | [`scripts/upload-m5core2.ps1`](./scripts/upload-m5core2.ps1) | コンパイルとアップロードを補助 |
+| [`scripts/generate_sprite_animation.py`](./scripts/generate_sprite_animation.py) | 透過アニメーション WebP を RGB565 フレーム列と確認用画像へ変換 |
 | [`examples/m5core2/hello/hello.ino`](./examples/m5core2/hello/hello.ino) | M5Core2 向けサンプルスケッチ |
+| [`examples/m5core2/sd_text_write/sd_text_write.ino`](./examples/m5core2/sd_text_write/sd_text_write.ino) | SD カード書き込み確認用サンプルスケッチ |
+| [`examples/m5core2/pixel_pet/pixel_pet.ino`](./examples/m5core2/pixel_pet/pixel_pet.ino) | 透過 WebP ベースの猫アニメ用サンプルスケッチ |
 | [`docs/`](./docs/) | 英日対応の VitePress ドキュメント |
 | [`references/windows-setup-and-diagnosis.md`](./references/windows-setup-and-diagnosis.md) | Windows / Arduino CLI のセットアップと切り分け |
 | [`references/m5-board-notes.md`](./references/m5-board-notes.md) | M5 固有のボードメモ |

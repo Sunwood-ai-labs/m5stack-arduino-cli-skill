@@ -23,6 +23,18 @@ examples/m5core2/sd_text_write/sd_text_write.ino
 - 画面とシリアルでの読み戻し
 - 空き容量と総容量の表示
 
+アニメーション猫サンプル:
+
+```text
+examples/m5core2/pixel_pet/pixel_pet.ino
+```
+
+- 透過アニメーション WebP を M5Core2 用の RGB565 フレーム列へ変換
+- 元の縦横比を保ったまま正方形キャンバスへ収める
+- 透過を保ってそのままアニメーション再生する
+- ボタン A / B / C でなでる、食べる、寝る / 起きる反応を切り替える
+- 元動画に動きがある前提で、追加の上下移動を入れない
+
 このスケッチでは次を確認できます。
 
 - `M5Unified` の初期化
@@ -59,6 +71,21 @@ SD カード確認用:
 .\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
 ```
 
+アニメーション猫サンプル用:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+```
+
+`uv` でアニメーションヘッダと確認用画像を再生成する例:
+
+```powershell
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\tmp\generated_cat_animation_preview.png --sheet .\tmp\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+```
+
+この変換ではフルフレームを使ったまま正方形キャンバスに収め、確認用のプレビュー画像とスプライトシートも同時に出力できます。
+
 このスクリプトはコンパイルとアップロードをまとめて行います。
 
 ## 開発中に `arduino-cli` を直接使う例
@@ -75,6 +102,13 @@ SD カード確認用:
 ```powershell
 & $cli compile .\examples\m5core2\sd_text_write
 & $cli upload -p COM11 .\examples\m5core2\sd_text_write
+```
+
+アニメーション猫サンプル用:
+
+```powershell
+& $cli compile .\examples\m5core2\pixel_pet
+& $cli upload -p COM11 .\examples\m5core2\pixel_pet
 ```
 
 まだ `attach` していないなら、毎回 FQBN を明示します。

@@ -52,6 +52,13 @@ For an SD card check that writes a text file and shows remaining capacity:
 .\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
 ```
 
+For the animated cat example that replays frames imported from an animated WebP:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+```
+
 ## Direct Compile And Upload
 
 ```powershell
@@ -69,6 +76,7 @@ $cli = "C:\Users\<User>\AppData\Local\Programs\Arduino IDE\resources\app\lib\bac
 - Common libraries: `M5Unified`, `M5GFX`
 - Default example sketch: `examples/m5core2/hello/hello.ino`
 - SD card check sketch: `examples/m5core2/sd_text_write/sd_text_write.ino`
+- Animated cat sketch: `examples/m5core2/pixel_pet/pixel_pet.ino`
 
 ## Next Step
 

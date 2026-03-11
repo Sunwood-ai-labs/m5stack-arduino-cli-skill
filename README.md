@@ -83,6 +83,37 @@ That sample demonstrates:
 - reading the file back to the display and serial monitor
 - showing free and total SD card capacity on screen
 
+Use the pixel pet sample when you want a playful display demo that stays inside one Arduino sketch:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+```
+
+```text
+examples/m5core2/pixel_pet/pixel_pet.ino
+```
+
+That sample demonstrates:
+
+- converting a transparent animated WebP into an RGB565 animation header for M5Core2
+- preserving the full-frame aspect ratio while fitting each frame into a square canvas
+- generating optional preview-strip and sprite-sheet PNGs during conversion
+- replaying the imported animation directly instead of adding extra bobbing motion in code
+- using Buttons A, B, and C to pet, feed, or put the character to sleep
+
+When you want to regenerate the animation assets from an animated WebP with `uv`, run:
+
+```powershell
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\tmp\generated_cat_animation_preview.png --sheet .\tmp\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+```
+
+That command leaves behind:
+
+- `examples/m5core2/pixel_pet/generated_cat_animation.h` for the Arduino sketch
+- `tmp/generated_cat_animation_preview.png` for a quick frame sanity check
+- `tmp/generated_cat_animation_sheet.png` for reviewing the sampled frames as a sprite sheet
+
 ## Direct Arduino CLI Commands
 
 Use these commands when you want to show the exact `arduino-cli` flow instead of the helper scripts:
@@ -110,8 +141,10 @@ If you want each command to be explicit and not rely on `sketch.yaml`, use:
 | [`agents/openai.yaml`](./agents/openai.yaml) | Agent-facing metadata such as display name and default prompt |
 | [`scripts/setup-m5core2.ps1`](./scripts/setup-m5core2.ps1) | PowerShell helper for CLI discovery, ESP32 setup, library install, and board attach |
 | [`scripts/upload-m5core2.ps1`](./scripts/upload-m5core2.ps1) | PowerShell helper for compile and upload |
+| [`scripts/generate_sprite_animation.py`](./scripts/generate_sprite_animation.py) | `uv`-driven converter from transparent animated WebP to RGB565 animation frames plus optional preview artifacts |
 | [`examples/m5core2/hello/hello.ino`](./examples/m5core2/hello/hello.ino) | Sample M5Core2 sketch for first flash and development |
 | [`examples/m5core2/sd_text_write/sd_text_write.ino`](./examples/m5core2/sd_text_write/sd_text_write.ino) | Sample M5Core2 sketch for SD card text write, readback, and free-space checks |
+| [`examples/m5core2/pixel_pet/pixel_pet.ino`](./examples/m5core2/pixel_pet/pixel_pet.ino) | Sample M5Core2 sketch for transparent WebP-driven cat animation and button-driven reactions |
 | [`docs/`](./docs/) | Bilingual VitePress docs for browsing the workflow as a site |
 | [`references/windows-setup-and-diagnosis.md`](./references/windows-setup-and-diagnosis.md) | Windows commands, setup flow, and `Unknown` troubleshooting |
 | [`references/m5-board-notes.md`](./references/m5-board-notes.md) | M5-specific board notes, bridge-chip context, and FQBN defaults |
@@ -176,6 +209,7 @@ The repository now uses a growth-friendly structure:
 |-- examples/
 |   `-- m5core2/
 |       |-- hello/
+|       |-- pixel_pet/
 |       `-- sd_text_write/
 |-- scripts/
 |   |-- common/

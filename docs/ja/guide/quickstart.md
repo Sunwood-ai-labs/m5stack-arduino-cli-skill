@@ -52,12 +52,21 @@ SD カード確認用:
 .\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\sd_text_write -Port COM11
 ```
 
+透過アニメーション WebP から取り込んだ猫アニメの例:
+
+```powershell
+.\scripts\setup-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+.\scripts\upload-m5core2.ps1 -SketchPath .\examples\m5core2\pixel_pet -Port COM11
+```
+
 ## 既定値
 
 - M5Core2 の FQBN: `esp32:esp32:m5stack_core2`
 - よくある USB ブリッジ名: `USB-Enhanced-SERIAL CH9102`, `Silicon Labs CP210x USB to UART Bridge`
 - よく使うライブラリ: `M5Unified`, `M5GFX`
 - 既定のサンプルスケッチ: `examples/m5core2/hello/hello.ino`
+- SD カード確認用スケッチ: `examples/m5core2/sd_text_write/sd_text_write.ino`
+- 猫アニメ用スケッチ: `examples/m5core2/pixel_pet/pixel_pet.ino`
 
 ## 次に読む場所
 
