@@ -84,6 +84,7 @@ examples/m5core2/pixel_pet/pixel_pet.ino
 
 - 透過アニメーション WebP を M5Core2 用の RGB565 フレーム列へ変換
 - 元の縦横比を保ったまま正方形キャンバスに収める
+- 最後のフレームから最初のフレームへ戻る部分に補間フレームを足してループをなじませる
 - プレビュー画像とスプライトシートを同時に生成して確認できる
 - 元アニメーションをそのまま再生し、ボタン A / B / C で反応だけを切り替える
 
@@ -98,7 +99,7 @@ examples/m5core2/pixel_pet/pixel_pet.ino
 変換アセットを `uv` で再生成する例:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8 --loop-blend-frames 3
 ```
 
 ## クイックスタート

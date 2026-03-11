@@ -32,6 +32,7 @@ examples/m5core2/pixel_pet/pixel_pet.ino
 - 透過アニメーション WebP を M5Core2 用の RGB565 フレーム列へ変換
 - 元の縦横比を保ったまま正方形キャンバスへ収める
 - 透過を保ってそのままアニメーション再生する
+- 最後から最初へ戻る部分に補間フレームを入れてループを自然にする
 - ボタン A / B / C でなでる、食べる、寝る / 起きる反応を切り替える
 - 元動画に動きがある前提で、追加の上下移動を入れない
 
@@ -89,10 +90,10 @@ SD カード確認用:
 `uv` でアニメーションヘッダと確認用画像を再生成する例:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8 --loop-blend-frames 3
 ```
 
-この変換ではフルフレームを使ったまま正方形キャンバスに収め、確認用のプレビュー画像とスプライトシートも同時に出力できます。
+この変換ではフルフレームを使ったまま正方形キャンバスに収め、ループ端に補間フレームを追加しつつ、確認用のプレビュー画像とスプライトシートも同時に出力できます。
 
 このスクリプトはコンパイルとアップロードをまとめて行います。
 

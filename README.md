@@ -98,6 +98,7 @@ That sample demonstrates:
 
 - converting a transparent animated WebP into an RGB565 animation header for M5Core2
 - preserving the full-frame aspect ratio while fitting each frame into a square canvas
+- inserting blended loop-transition frames so the last frame returns to the first more naturally
 - generating optional preview-strip and sprite-sheet PNGs during conversion
 - replaying the imported animation directly instead of adding extra bobbing motion in code
 - using Buttons A, B, and C to pet, feed, or put the character to sleep
@@ -113,7 +114,7 @@ Sprite sheet generated from the full sampled animation:
 When you want to regenerate the animation assets from an animated WebP with `uv`, run:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8 --loop-blend-frames 3
 ```
 
 That command leaves behind:
@@ -121,6 +122,7 @@ That command leaves behind:
 - `examples/m5core2/pixel_pet/generated_cat_animation.h` for the Arduino sketch
 - `docs/public/examples/pixel_pet/generated_cat_animation_preview.png` for a quick frame sanity check
 - `docs/public/examples/pixel_pet/generated_cat_animation_sheet.png` for reviewing the sampled frames as a sprite sheet
+- a smoother loop by blending the tail of the animation back into the first frame
 
 ## Direct Arduino CLI Commands
 

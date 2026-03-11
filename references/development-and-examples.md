@@ -70,13 +70,14 @@ For the pixel pet sample:
 - converting a transparent animated WebP into an RGB565 animation header for M5Core2
 - fitting full frames into a square canvas without distorting aspect ratio
 - preserving transparency while replaying the imported animation on screen
+- inserting blended loop-transition frames so the animation wraps more smoothly
 - generating preview-strip and sprite-sheet PNGs during asset conversion
 - changing the pet reaction text and timing with Button A, Button B, and Button C while reusing the imported art
 
 To regenerate the transparent cat animation asset with `uv` and Pillow:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8 --loop-blend-frames 3
 ```
 
 That conversion flow leaves behind:
@@ -84,6 +85,7 @@ That conversion flow leaves behind:
 - `examples/m5core2/pixel_pet/generated_cat_animation.h` for the sketch
 - `docs/public/examples/pixel_pet/generated_cat_animation_preview.png` for quick visual checks
 - `docs/public/examples/pixel_pet/generated_cat_animation_sheet.png` for reviewing sampled frames as a sprite sheet
+- extra blended loop-transition frames for a less abrupt wraparound
 
 ## Development support expectations
 

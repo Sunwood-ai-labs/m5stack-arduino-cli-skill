@@ -43,6 +43,7 @@ It demonstrates:
 - converting a transparent animated WebP into RGB565 frames for M5Core2
 - fitting each imported frame into a square canvas without distorting aspect ratio
 - preserving transparency while replaying the imported animation on the device
+- inserting blended loop-transition frames so the loop wraps more smoothly
 - using Button A, Button B, and Button C for pet, feed, and sleep or wake reactions
 - keeping extra motion out of the sketch when the source animation already contains motion
 
@@ -95,10 +96,10 @@ To run the animated cat example instead:
 To regenerate the animation header and preview artifacts with `uv`:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8 --loop-blend-frames 3
 ```
 
-That converter keeps the full frame, fits it into a square canvas, and can emit both a quick preview strip and a sprite sheet for review.
+That converter keeps the full frame, fits it into a square canvas, adds blended transition frames at the loop boundary, and can emit both a quick preview strip and a sprite sheet for review.
 
 ## Direct CLI Commands For Development
 

@@ -25,6 +25,11 @@ def frame_indices(frame_count: int, step: int) -> list[int]:
     return list(range(0, frame_count, step))
 
 
+def smooth_mix(index: int, total: int) -> float:
+    linear = index / (total + 1)
+    return linear * linear * (3.0 - (2.0 * linear))
+
+
 def fit_frame_to_canvas(frame: Image.Image, size: int) -> Image.Image:
     rgba = frame.convert("RGBA")
     if rgba.width == 0 or rgba.height == 0:
@@ -43,13 +48,11 @@ def fit_frame_to_canvas(frame: Image.Image, size: int) -> Image.Image:
     return canvas
 
 
-def convert_frame(frame: Image.Image, size: int, alpha_threshold: int) -> list[int]:
-    rgba = fit_frame_to_canvas(frame, size)
-
+def convert_rgba_frame(frame: Image.Image, alpha_threshold: int) -> list[int]:
     pixels: list[int] = []
-    for y in range(rgba.height):
-        for x in range(rgba.width):
-            red, green, blue, alpha = rgba.getpixel((x, y))
+    for y in range(frame.height):
+        for x in range(frame.width):
+            red, green, blue, alpha = frame.getpixel((x, y))
             if alpha < alpha_threshold:
                 pixels.append(TRANSPARENT_COLOR)
             else:
@@ -58,11 +61,31 @@ def convert_frame(frame: Image.Image, size: int, alpha_threshold: int) -> list[i
     return pixels
 
 
-def preview_frame(frame: Image.Image, size: int) -> Image.Image:
-    rgba = fit_frame_to_canvas(frame, size)
-    background = Image.new("RGBA", (size, size), (52, 78, 90, 255))
-    background.alpha_composite(rgba)
+def convert_frame(frame: Image.Image, size: int, alpha_threshold: int) -> list[int]:
+    return convert_rgba_frame(fit_frame_to_canvas(frame, size), alpha_threshold)
+
+
+def preview_rgba_frame(frame: Image.Image) -> Image.Image:
+    background = Image.new("RGBA", frame.size, (52, 78, 90, 255))
+    background.alpha_composite(frame)
     return background
+
+
+def preview_frame(frame: Image.Image, size: int) -> Image.Image:
+    return preview_rgba_frame(fit_frame_to_canvas(frame, size))
+
+
+def add_loop_blend_frames(frames: list[Image.Image], blend_count: int) -> list[Image.Image]:
+    if blend_count <= 0 or len(frames) < 2:
+        return frames
+
+    loop_frames = list(frames)
+    start_frame = frames[0]
+    end_frame = frames[-1]
+    for index in range(1, blend_count + 1):
+        mix = smooth_mix(index, blend_count)
+        loop_frames.append(Image.blend(end_frame, start_frame, mix))
+    return loop_frames
 
 
 def write_header(path: Path, width: int, height: int, frames: list[list[int]]) -> None:
@@ -127,25 +150,24 @@ def main() -> None:
     parser.add_argument("--preview-frames", type=int, default=8)
     parser.add_argument("--sheet-columns", type=int, default=8)
     parser.add_argument("--alpha-threshold", type=int, default=16)
+    parser.add_argument("--loop-blend-frames", type=int, default=3)
     args = parser.parse_args()
 
     image = Image.open(args.input)
     total_frames = getattr(image, "n_frames", 1)
     selected_indices = frame_indices(total_frames, args.frame_step)
 
-    converted_frames: list[list[int]] = []
-    preview_frames: list[Image.Image] = []
-    sheet_frames: list[Image.Image] = []
+    fitted_frames: list[Image.Image] = []
 
     for index in selected_indices:
         image.seek(index)
         frame = image.copy()
-        converted_frames.append(convert_frame(frame, args.size, args.alpha_threshold))
-        fitted_frame = fit_frame_to_canvas(frame, args.size)
-        fitted_preview = preview_frame(frame, args.size)
-        sheet_frames.append(fitted_frame)
-        if len(preview_frames) < args.preview_frames:
-            preview_frames.append(fitted_preview)
+        fitted_frames.append(fit_frame_to_canvas(frame, args.size))
+
+    loop_frames = add_loop_blend_frames(fitted_frames, args.loop_blend_frames)
+    converted_frames = [convert_rgba_frame(frame, args.alpha_threshold) for frame in loop_frames]
+    preview_frames = [preview_rgba_frame(frame) for frame in loop_frames[:args.preview_frames]]
+    sheet_frames = loop_frames
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     write_header(args.output, args.size, args.size, converted_frames)
