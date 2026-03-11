@@ -1,0 +1,64 @@
+<svg width="1600" height="640" viewBox="0 0 1600 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="120" y1="80" x2="1480" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3FBFC"/>
+      <stop offset="1" stop-color="#D5EEF0"/>
+    </linearGradient>
+    <linearGradient id="panelGradient" x1="126" y1="98" x2="524" y2="478" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F95A5"/>
+      <stop offset="1" stop-color="#0A7E8C"/>
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="900" y1="180" x2="1460" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E65100"/>
+      <stop offset="1" stop-color="#FF8A3D"/>
+    </linearGradient>
+    <filter id="softShadow" x="38" y="56" width="604" height="520" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="18"/>
+      <feGaussianBlur stdDeviation="24"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0745098 0 0 0 0 0.160784 0 0 0 0 0.239216 0 0 0 0.18 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_1" result="shape"/>
+    </filter>
+    <filter id="glow" x="744" y="115" width="640" height="430" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="30" result="effect1_foregroundBlur_1_1"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="640" rx="48" fill="url(#bgGradient)"/>
+  <circle cx="1376" cy="112" r="124" fill="#FFFFFF" fill-opacity="0.52"/>
+  <circle cx="1440" cy="548" r="168" fill="#FFFFFF" fill-opacity="0.28"/>
+  <circle cx="224" cy="110" r="86" fill="#FFFFFF" fill-opacity="0.44"/>
+  <path d="M0 492C176 416 324 392 472 408C643 426 756 546 941 544C1130 542 1294 430 1600 452V640H0V492Z" fill="#FFFFFF" fill-opacity="0.5"/>
+  <path d="M0 532C176 470 324 452 464 466C631 482 758 582 948 580C1142 578 1309 484 1600 500V640H0V532Z" fill="#C8E7EA" fill-opacity="0.64"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="86" y="104" width="508" height="392" rx="44" fill="url(#panelGradient)"/>
+    <rect x="146" y="162" width="388" height="232" rx="26" fill="#13293D"/>
+    <rect x="236" y="440" width="208" height="34" rx="17" fill="#1B5E20"/>
+    <rect x="170" y="470" width="340" height="28" rx="14" fill="#37474F"/>
+    <circle cx="212" cy="460" r="16" fill="#E8F3F4"/>
+    <circle cx="470" cy="460" r="16" fill="#E8F3F4"/>
+    <path d="M267 267H413" stroke="#5BC0BE" stroke-width="28" stroke-linecap="round"/>
+    <path d="M340 194V340" stroke="#5BC0BE" stroke-width="28" stroke-linecap="round"/>
+    <path d="M582 280H660C692.033 280 718 305.967 718 338V382" stroke="#E65100" stroke-width="24" stroke-linecap="round"/>
+  </g>
+
+  <path d="M678 398C765 349 845 325 924 325C1038 325 1118 375 1235 375C1313 375 1391 353 1482 305" stroke="#E65100" stroke-width="14" stroke-linecap="round" stroke-opacity="0.95"/>
+  <path d="M675 430C772 378 852 352 928 352C1038 352 1110 406 1220 406C1310 406 1395 381 1500 330" stroke="#5BC0BE" stroke-width="8" stroke-linecap="round" stroke-opacity="0.82"/>
+
+  <g filter="url(#glow)">
+    <ellipse cx="1094" cy="330" rx="228" ry="118" fill="url(#accentGradient)" fill-opacity="0.14"/>
+  </g>
+
+  <text x="760" y="208" fill="#0A7E8C" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="52" font-weight="700" letter-spacing="0.16em">RELEASE NOTES</text>
+  <text x="760" y="392" fill="#13293D" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="188" font-weight="900" letter-spacing="-0.04em">v0.1.0</text>
+  <text x="764" y="472" fill="#375567" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="42" font-weight="600" letter-spacing="0.02em">M5Stack Arduino CLI Skill</text>
+
+  <rect x="758" y="514" width="312" height="18" rx="9" fill="#0A7E8C" fill-opacity="0.14"/>
+  <rect x="1090" y="514" width="160" height="18" rx="9" fill="#E65100" fill-opacity="0.22"/>
+</svg>
