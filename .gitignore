@@ -1,0 +1,14 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+
+# JavaScript docs or site tooling
+node_modules/
+dist/
+
+# Logs
+*.log
