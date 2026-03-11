@@ -1,0 +1,32 @@
+name: Docs improvement
+description: Suggest a README or reference-doc improvement.
+title: "[Docs]: "
+labels:
+  - documentation
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What felt unclear or missing?
+      placeholder: The README does not explain how `Unknown` differs from a missing driver.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Suggested improvement
+      placeholder: Add a short explanation and link to the diagnosis reference.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: locale
+    attributes:
+      label: Affected language
+      options:
+        - English
+        - Japanese
+        - Both
+    validations:
+      required: true

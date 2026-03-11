@@ -1,0 +1,60 @@
+name: Bug report
+description: Report a skill behavior issue or inaccurate troubleshooting guidance.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this. Please include enough context for us to reproduce the exact Windows + Arduino CLI flow.
+
+  - type: input
+    id: board
+    attributes:
+      label: M5Stack board model
+      description: "Example: M5Core2, CoreS3, StickC Plus2"
+      placeholder: M5Core2
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2
+    validations:
+      required: true
+
+  - type: input
+    id: arduino_cli
+    attributes:
+      label: Arduino CLI version
+      placeholder: "arduino-cli version 1.3.1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: What happened?
+      description: Paste the command output or describe the incorrect guidance.
+      placeholder: |
+        `arduino-cli board list` showed COM11 as Unknown and the skill suggested the wrong FQBN.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      placeholder: "The skill should have attached esp32:esp32:m5stack_core2."
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Extra diagnostics
+      description: Include `Get-PnpDevice`, `board list`, or `esptool` output if available.
+      render: shell

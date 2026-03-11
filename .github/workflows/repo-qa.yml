@@ -1,0 +1,63 @@
+name: Repository QA
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  markdown:
+    name: Markdown lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Lint Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v20
+        with:
+          config: .markdownlint.json
+          globs: |
+            **/*.md
+
+  yaml:
+    name: YAML lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Lint YAML
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint.yml
+          file_or_dir: .github agents
+
+  repo-shape:
+    name: Repository shape checks
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify required repository files
+        shell: pwsh
+        run: |
+          $requiredPaths = @(
+            'SKILL.md',
+            'README.md',
+            'README.ja.md',
+            'LICENSE',
+            'agents/openai.yaml',
+            'references/windows-setup-and-diagnosis.md',
+            'references/m5-board-notes.md',
+            'assets/m5stack-arduino-cli-icon.svg'
+          )
+
+          $missing = $requiredPaths | Where-Object { -not (Test-Path $_) }
+          if ($missing.Count -gt 0) {
+            Write-Error ("Missing required paths: " + ($missing -join ', '))
+          }
