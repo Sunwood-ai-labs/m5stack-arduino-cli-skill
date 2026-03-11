@@ -76,14 +76,14 @@ For the pixel pet sample:
 To regenerate the transparent cat animation asset with `uv` and Pillow:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\tmp\generated_cat_animation_preview.png --sheet .\tmp\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
 ```
 
 That conversion flow leaves behind:
 
 - `examples/m5core2/pixel_pet/generated_cat_animation.h` for the sketch
-- `tmp/generated_cat_animation_preview.png` for quick visual checks
-- `tmp/generated_cat_animation_sheet.png` for reviewing sampled frames as a sprite sheet
+- `docs/public/examples/pixel_pet/generated_cat_animation_preview.png` for quick visual checks
+- `docs/public/examples/pixel_pet/generated_cat_animation_sheet.png` for reviewing sampled frames as a sprite sheet
 
 ## Development support expectations
 

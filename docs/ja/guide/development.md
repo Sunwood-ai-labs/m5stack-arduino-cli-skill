@@ -35,6 +35,14 @@ examples/m5core2/pixel_pet/pixel_pet.ino
 - ボタン A / B / C でなでる、食べる、寝る / 起きる反応を切り替える
 - 元動画に動きがある前提で、追加の上下移動を入れない
 
+公開用に残しているプレビュー画像:
+
+![猫アニメのプレビュー](/examples/pixel_pet/generated_cat_animation_preview.png)
+
+公開用に残しているスプライトシート:
+
+![猫アニメのスプライトシート](/examples/pixel_pet/generated_cat_animation_sheet.png)
+
 このスケッチでは次を確認できます。
 
 - `M5Unified` の初期化
@@ -81,7 +89,7 @@ SD カード確認用:
 `uv` でアニメーションヘッダと確認用画像を再生成する例:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\tmp\generated_cat_animation_preview.png --sheet .\tmp\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
 ```
 
 この変換ではフルフレームを使ったまま正方形キャンバスに収め、確認用のプレビュー画像とスプライトシートも同時に出力できます。

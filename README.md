@@ -102,17 +102,25 @@ That sample demonstrates:
 - replaying the imported animation directly instead of adding extra bobbing motion in code
 - using Buttons A, B, and C to pet, feed, or put the character to sleep
 
+Preview strip generated from the sampled frames:
+
+![Animated cat preview strip](./docs/public/examples/pixel_pet/generated_cat_animation_preview.png)
+
+Sprite sheet generated from the full sampled animation:
+
+![Animated cat sprite sheet](./docs/public/examples/pixel_pet/generated_cat_animation_sheet.png)
+
 When you want to regenerate the animation assets from an animated WebP with `uv`, run:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\tmp\generated_cat_animation_preview.png --sheet .\tmp\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
 ```
 
 That command leaves behind:
 
 - `examples/m5core2/pixel_pet/generated_cat_animation.h` for the Arduino sketch
-- `tmp/generated_cat_animation_preview.png` for a quick frame sanity check
-- `tmp/generated_cat_animation_sheet.png` for reviewing the sampled frames as a sprite sheet
+- `docs/public/examples/pixel_pet/generated_cat_animation_preview.png` for a quick frame sanity check
+- `docs/public/examples/pixel_pet/generated_cat_animation_sheet.png` for reviewing the sampled frames as a sprite sheet
 
 ## Direct Arduino CLI Commands
 

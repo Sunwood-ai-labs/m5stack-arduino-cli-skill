@@ -46,6 +46,14 @@ It demonstrates:
 - using Button A, Button B, and Button C for pet, feed, and sleep or wake reactions
 - keeping extra motion out of the sketch when the source animation already contains motion
 
+Preview strip from the published example:
+
+![Animated cat preview strip](/examples/pixel_pet/generated_cat_animation_preview.png)
+
+Sprite sheet from the published example:
+
+![Animated cat sprite sheet](/examples/pixel_pet/generated_cat_animation_sheet.png)
+
 ## Helper Scripts
 
 ### Setup helper
@@ -87,7 +95,7 @@ To run the animated cat example instead:
 To regenerate the animation header and preview artifacts with `uv`:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\tmp\generated_cat_animation_preview.png --sheet .\tmp\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
 ```
 
 That converter keeps the full frame, fits it into a square canvas, and can emit both a quick preview strip and a sprite sheet for review.

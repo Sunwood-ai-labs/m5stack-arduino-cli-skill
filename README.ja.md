@@ -87,10 +87,18 @@ examples/m5core2/pixel_pet/pixel_pet.ino
 - プレビュー画像とスプライトシートを同時に生成して確認できる
 - 元アニメーションをそのまま再生し、ボタン A / B / C で反応だけを切り替える
 
+サンプリングしたフレームから生成したプレビュー:
+
+![猫アニメのプレビュー](./docs/public/examples/pixel_pet/generated_cat_animation_preview.png)
+
+サンプリングしたアニメーション全体のスプライトシート:
+
+![猫アニメのスプライトシート](./docs/public/examples/pixel_pet/generated_cat_animation_sheet.png)
+
 変換アセットを `uv` で再生成する例:
 
 ```powershell
-uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\tmp\generated_cat_animation_preview.png --sheet .\tmp\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
+uv run .\scripts\generate_sprite_animation.py --input 'D:\path\to\cat.webp' --output .\examples\m5core2\pixel_pet\generated_cat_animation.h --preview .\docs\public\examples\pixel_pet\generated_cat_animation_preview.png --sheet .\docs\public\examples\pixel_pet\generated_cat_animation_sheet.png --size 112 --frame-step 4 --sheet-columns 8
 ```
 
 ## クイックスタート
