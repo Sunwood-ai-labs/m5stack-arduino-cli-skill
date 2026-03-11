@@ -1,0 +1,48 @@
+# Quick Start
+
+## What This Skill Solves
+
+Use this skill when an M5Stack board is connected to Windows but `arduino-cli board list`
+still reports the board as `Unknown`, or when you need Codex to attach the correct board
+profile before compiling or uploading.
+
+## Recommended Prompt
+
+```text
+Use $m5stack-arduino-cli to diagnose why my M5Core2 shows Unknown in arduino-cli board list on Windows and attach the correct FQBN.
+```
+
+## Default Workflow
+
+1. Confirm that Windows sees the board as a serial device.
+2. Locate `arduino-cli`, including the Arduino IDE bundled binary if it is not on `PATH`.
+3. Ensure the ESP32 core is configured and installed.
+4. Identify the current COM port from Windows and `arduino-cli board list`.
+5. Treat `Unknown` as an auto-identification limit unless transport checks fail too.
+6. Attach the intended FQBN and port to the sketch.
+7. Compile and upload with the attached configuration.
+
+## High-Value Commands
+
+```powershell
+where.exe arduino-cli
+Get-CimInstance Win32_SerialPort | Select-Object DeviceID,Name,Description,PNPDeviceID
+Get-PnpDevice -PresentOnly | Where-Object { $_.Class -in @('Ports','USB') } |
+  Select-Object Class,FriendlyName,Status,InstanceId
+arduino-cli board list
+arduino-cli core update-index
+arduino-cli core install esp32:esp32
+arduino-cli board attach -p COM11 -b esp32:esp32:m5stack_core2 D:\Prj\M5\VerifyCore2
+arduino-cli compile D:\Prj\M5\VerifyCore2
+arduino-cli upload -p COM11 D:\Prj\M5\VerifyCore2
+```
+
+## Good Defaults
+
+- M5Core2 FQBN: `esp32:esp32:m5stack_core2`
+- Common bridge names: `USB-Enhanced-SERIAL CH9102`, `Silicon Labs CP210x USB to UART Bridge`
+- Common libraries: `M5Unified`, `M5GFX`
+
+## Next Step
+
+Move to [Diagnosis Playbook](/guide/diagnosis) when you need a more detailed decision tree.

@@ -9,6 +9,8 @@ Thumbs.db
 # JavaScript docs or site tooling
 node_modules/
 dist/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
 
 # Logs
 *.log

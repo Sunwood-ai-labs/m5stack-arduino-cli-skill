@@ -11,6 +11,12 @@
   <p><a href="./README.md">English</a> | <a href="./README.ja.md">日本語</a></p>
 </div>
 
+## Docs
+
+- Browse the docs site: [Sunwood-ai-labs.github.io/m5stack-arduino-cli-skill](https://sunwood-ai-labs.github.io/m5stack-arduino-cli-skill/)
+- English quick start: [`docs/guide/quickstart.md`](./docs/guide/quickstart.md)
+- Japanese quick start: [`docs/ja/guide/quickstart.md`](./docs/ja/guide/quickstart.md)
+
 ## Overview
 
 This repository packages a reusable Codex skill for one stubborn but common workflow:
@@ -51,6 +57,7 @@ The skill will steer Codex through this workflow:
 | --- | --- |
 | [`SKILL.md`](./SKILL.md) | Main skill instructions, rules, and default workflow |
 | [`agents/openai.yaml`](./agents/openai.yaml) | Agent-facing metadata such as display name and default prompt |
+| [`docs/`](./docs/) | Bilingual VitePress docs for browsing the workflow as a site |
 | [`references/windows-setup-and-diagnosis.md`](./references/windows-setup-and-diagnosis.md) | Windows commands, setup flow, and `Unknown` troubleshooting |
 | [`references/m5-board-notes.md`](./references/m5-board-notes.md) | M5-specific board notes, bridge-chip context, and FQBN defaults |
 
@@ -88,6 +95,10 @@ The guidance intentionally avoids random driver reinstalls. It asks Codex to con
 |   `-- openai.yaml
 |-- assets/
 |   `-- m5stack-arduino-cli-icon.svg
+|-- docs/
+|   |-- .vitepress/
+|   |-- guide/
+|   `-- ja/
 `-- references/
     |-- m5-board-notes.md
     `-- windows-setup-and-diagnosis.md

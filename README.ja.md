@@ -11,6 +11,12 @@
   <p><a href="./README.md">English</a> | <a href="./README.ja.md">日本語</a></p>
 </div>
 
+## ドキュメント
+
+- 閲覧用サイト: [sunwood-ai-labs.github.io/m5stack-arduino-cli-skill](https://sunwood-ai-labs.github.io/m5stack-arduino-cli-skill/)
+- 英語版クイックスタート: [`docs/guide/quickstart.md`](./docs/guide/quickstart.md)
+- 日本語版クイックスタート: [`docs/ja/guide/quickstart.md`](./docs/ja/guide/quickstart.md)
+
 ## 概要
 
 このリポジトリは、Windows 上で `arduino-cli` を使って M5Stack を扱う際の定番トラブルを
@@ -53,6 +59,7 @@ Use $m5stack-arduino-cli to diagnose why my M5Core2 shows Unknown in arduino-cli
 | --- | --- |
 | [`SKILL.md`](./SKILL.md) | スキル本体の指示、ルール、標準ワークフロー |
 | [`agents/openai.yaml`](./agents/openai.yaml) | 表示名や既定プロンプトなどのエージェント向けメタデータ |
+| [`docs/`](./docs/) | ブラウズ可能な英日 VitePress ドキュメント |
 | [`references/windows-setup-and-diagnosis.md`](./references/windows-setup-and-diagnosis.md) | Windows コマンド、セットアップ手順、`Unknown` 診断の詳細 |
 | [`references/m5-board-notes.md`](./references/m5-board-notes.md) | M5 系ボード特有の事情、ブリッジチップの背景、FQBN 既定値 |
 
@@ -90,6 +97,10 @@ Arduino CLI がボード名を自動判定できず `Unknown` になることが
 |   `-- openai.yaml
 |-- assets/
 |   `-- m5stack-arduino-cli-icon.svg
+|-- docs/
+|   |-- .vitepress/
+|   |-- guide/
+|   `-- ja/
 `-- references/
     |-- m5-board-notes.md
     `-- windows-setup-and-diagnosis.md

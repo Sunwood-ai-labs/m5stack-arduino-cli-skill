@@ -52,6 +52,10 @@ jobs:
             'README.ja.md',
             'LICENSE',
             'agents/openai.yaml',
+            'docs/package.json',
+            'docs/.vitepress/config.ts',
+            'docs/index.md',
+            'docs/ja/index.md',
             'references/windows-setup-and-diagnosis.md',
             'references/m5-board-notes.md',
             'assets/m5stack-arduino-cli-icon.svg'
@@ -61,3 +65,26 @@ jobs:
           if ($missing.Count -gt 0) {
             Write-Error ("Missing required paths: " + ($missing -join ', '))
           }
+
+  docs-build:
+    name: Docs build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Install docs dependencies
+        run: npm ci
+
+      - name: Build docs
+        run: npm run docs:build
