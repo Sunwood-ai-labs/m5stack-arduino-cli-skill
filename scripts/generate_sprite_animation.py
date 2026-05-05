@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import math
+import re
 from pathlib import Path
 
 from PIL import Image
@@ -88,18 +89,34 @@ def add_loop_blend_frames(frames: list[Image.Image], blend_count: int) -> list[I
     return loop_frames
 
 
-def write_header(path: Path, width: int, height: int, frames: list[list[int]]) -> None:
+def sanitize_symbol_prefix(raw_prefix: str) -> str:
+    cleaned = re.sub(r"[^0-9A-Za-z]+", " ", raw_prefix).title().replace(" ", "")
+    if not cleaned:
+        return "Cat"
+    if cleaned[0].isdigit():
+        cleaned = f"Anim{cleaned}"
+    return cleaned
+
+
+def write_header(path: Path, width: int, height: int, frames: list[list[int]], symbol_prefix: str) -> None:
+    symbol_prefix = sanitize_symbol_prefix(symbol_prefix)
+    frame_width_name = f"k{symbol_prefix}FrameWidth"
+    frame_height_name = f"k{symbol_prefix}FrameHeight"
+    frame_count_name = f"k{symbol_prefix}FrameCount"
+    transparent_name = f"k{symbol_prefix}TransparentColor"
+    pixels_name = f"k{symbol_prefix}AnimationPixels"
+
     lines = [
         "#pragma once",
         "",
         "#include <stdint.h>",
         "",
-        f"constexpr int kCatFrameWidth = {width};",
-        f"constexpr int kCatFrameHeight = {height};",
-        f"constexpr int kCatFrameCount = {len(frames)};",
-        f"constexpr uint16_t kCatTransparentColor = 0x{TRANSPARENT_COLOR:04X};",
+        f"constexpr int {frame_width_name} = {width};",
+        f"constexpr int {frame_height_name} = {height};",
+        f"constexpr int {frame_count_name} = {len(frames)};",
+        f"constexpr uint16_t {transparent_name} = 0x{TRANSPARENT_COLOR:04X};",
         "",
-        "const uint16_t kCatAnimationPixels[kCatFrameCount][kCatFrameWidth * kCatFrameHeight] = {",
+        f"const uint16_t {pixels_name}[{frame_count_name}][{frame_width_name} * {frame_height_name}] = {{",
     ]
 
     for frame in frames:
@@ -151,6 +168,7 @@ def main() -> None:
     parser.add_argument("--sheet-columns", type=int, default=8)
     parser.add_argument("--alpha-threshold", type=int, default=16)
     parser.add_argument("--loop-blend-frames", type=int, default=3)
+    parser.add_argument("--symbol-prefix", default="Cat")
     args = parser.parse_args()
 
     image = Image.open(args.input)
@@ -170,7 +188,7 @@ def main() -> None:
     sheet_frames = loop_frames
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    write_header(args.output, args.size, args.size, converted_frames)
+    write_header(args.output, args.size, args.size, converted_frames, args.symbol_prefix)
 
     if args.preview:
         save_preview_strip(args.preview, preview_frames, args.size)

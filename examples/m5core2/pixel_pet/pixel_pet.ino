@@ -1,6 +1,8 @@
 #include <M5Unified.h>
 
 #include "generated_cat_animation.h"
+#include "generated_happy_animation.h"
+#include "generated_running_animation.h"
 
 namespace {
 
@@ -12,7 +14,7 @@ constexpr uint16_t kBubbleColor = 0xFFDF;
 constexpr uint16_t kBubbleBorder = 0x6B4D;
 constexpr uint16_t kOutlineColor = 0x0841;
 constexpr uint16_t kHeartColor = 0xE8E7;
-constexpr uint16_t kFishColor = 0xFEC0;
+constexpr uint16_t kDashColor = 0x9D7C;
 
 constexpr int kIconSize = 8;
 constexpr int kPetBaseX = (320 - kCatFrameWidth) / 2;
@@ -29,27 +31,26 @@ const char* const kHeartIcon[kIconSize] = {
     "........",
 };
 
-const char* const kFishIcon[kIconSize] = {
-    "...yy...",
-    "..yyyy..",
-    "yyyyyyyy",
-    ".yyyyyyy",
-    "yyyyyyyy",
-    "..yyyy..",
-    "...yy...",
+const char* const kDashIcon[kIconSize] = {
+    "........",
+    "..gggg..",
+    ".gggggg.",
+    "........",
+    "..gggg..",
+    ".gggggg.",
+    "........",
     "........",
 };
 
-enum class Mood {
-  Idle,
+enum class AnimationMode {
+  Normal,
   Happy,
-  Snack,
+  Running,
 };
 
 struct PetState {
-  Mood mood = Mood::Idle;
+  AnimationMode animation = AnimationMode::Normal;
   bool sleeping = false;
-  uint32_t moodUntilMs = 0;
   uint32_t nextFrameMs = 0;
   uint32_t nextDrawMs = 0;
   int frameIndex = 0;
@@ -62,29 +63,52 @@ uint16_t paletteColor(char cell) {
   switch (cell) {
     case 'r':
       return kHeartColor;
-    case 'y':
-      return kFishColor;
+    case 'g':
+      return kDashColor;
     default:
       return 0;
   }
 }
 
-void setMood(Mood mood, uint32_t durationMs) {
-  pet.mood = mood;
-  pet.moodUntilMs = millis() + durationMs;
+int activeFrameCount() {
+  switch (pet.animation) {
+    case AnimationMode::Happy:
+      return kHappyFrameCount;
+    case AnimationMode::Running:
+      return kRunningFrameCount;
+    case AnimationMode::Normal:
+    default:
+      return kCatFrameCount;
+  }
 }
 
-const char* moodLabel() {
+void selectAnimation(AnimationMode animation) {
+  pet.animation = animation;
+  pet.frameIndex = 0;
+}
+
+void stepAnimation(int direction) {
+  const int modeCount = 3;
+  int next = static_cast<int>(pet.animation) + direction;
+  if (next < 0) {
+    next += modeCount;
+  } else if (next >= modeCount) {
+    next -= modeCount;
+  }
+  selectAnimation(static_cast<AnimationMode>(next));
+}
+
+const char* animationLabel() {
   if (pet.sleeping) {
     return "Cat nap";
   }
 
-  switch (pet.mood) {
-    case Mood::Happy:
-      return "Purr purr";
-    case Mood::Snack:
-      return "Treat time";
-    case Mood::Idle:
+  switch (pet.animation) {
+    case AnimationMode::Happy:
+      return "Happy dance";
+    case AnimationMode::Running:
+      return "Zoomies";
+    case AnimationMode::Normal:
     default:
       return "Tiny meow";
   }
@@ -95,14 +119,14 @@ const char* helperLabel() {
     return "C to wake up";
   }
 
-  switch (pet.mood) {
-    case Mood::Happy:
-      return "A for more pets";
-    case Mood::Snack:
-      return "B for more treats";
-    case Mood::Idle:
+  switch (pet.animation) {
+    case AnimationMode::Happy:
+      return "A previous  B next";
+    case AnimationMode::Running:
+      return "A previous  B next";
+    case AnimationMode::Normal:
     default:
-      return "A pet  B feed  C sleep";
+      return "A previous  B next";
   }
 }
 
@@ -134,14 +158,14 @@ void drawStatusBubble(uint32_t now) {
   frameBuffer.setTextColor(kOutlineColor, kBubbleColor);
   frameBuffer.setTextDatum(top_left);
   frameBuffer.setTextSize(2);
-  frameBuffer.drawString(moodLabel(), 26, 24);
+  frameBuffer.drawString(animationLabel(), 26, 24);
 
-  if (pet.mood == Mood::Happy && !pet.sleeping) {
+  if (pet.animation == AnimationMode::Happy && !pet.sleeping) {
     const int rise = (now / 120) % 6;
     drawIcon(kHeartIcon, kIconSize, kIconSize, 166, 22 - rise, 3);
-  } else if (pet.mood == Mood::Snack && !pet.sleeping) {
-    const int sway = (now / 160) % 2;
-    drawIcon(kFishIcon, kIconSize, kIconSize, 166 + sway, 22, 3);
+  } else if (pet.animation == AnimationMode::Running && !pet.sleeping) {
+    const int sway = (now / 80) % 2;
+    drawIcon(kDashIcon, kIconSize, kIconSize, 164 + sway, 24, 3);
   }
 }
 
@@ -150,7 +174,7 @@ void drawHints() {
   frameBuffer.setTextColor(kTextColor, kSkyColor);
   frameBuffer.setTextSize(1);
   frameBuffer.drawString(helperLabel(), 16, 78);
-  frameBuffer.drawString("A Pet   B Feed   C Sleep/Wake", 54, 220);
+  frameBuffer.drawString("A Prev   B Next   C Sleep/Wake", 34, 220);
 }
 
 void drawScene(uint32_t now) {
@@ -158,16 +182,31 @@ void drawScene(uint32_t now) {
   drawStatusBubble(now);
   drawHints();
 
-  const int x = kPetBaseX;
-  const int y = kPetBaseY;
-
-  frameBuffer.pushImage(
-      x,
-      y,
-      kCatFrameWidth,
-      kCatFrameHeight,
-      reinterpret_cast<const lgfx::v1::rgb565_t*>(kCatAnimationPixels[pet.frameIndex]),
-      lgfx::v1::rgb565_t(kCatTransparentColor));
+  if (pet.animation == AnimationMode::Happy) {
+    frameBuffer.pushImage(
+        kPetBaseX,
+        kPetBaseY,
+        kHappyFrameWidth,
+        kHappyFrameHeight,
+        reinterpret_cast<const lgfx::v1::rgb565_t*>(kHappyAnimationPixels[pet.frameIndex]),
+        lgfx::v1::rgb565_t(kHappyTransparentColor));
+  } else if (pet.animation == AnimationMode::Running) {
+    frameBuffer.pushImage(
+        kPetBaseX,
+        kPetBaseY,
+        kRunningFrameWidth,
+        kRunningFrameHeight,
+        reinterpret_cast<const lgfx::v1::rgb565_t*>(kRunningAnimationPixels[pet.frameIndex]),
+        lgfx::v1::rgb565_t(kRunningTransparentColor));
+  } else {
+    frameBuffer.pushImage(
+        kPetBaseX,
+        kPetBaseY,
+        kCatFrameWidth,
+        kCatFrameHeight,
+        reinterpret_cast<const lgfx::v1::rgb565_t*>(kCatAnimationPixels[pet.frameIndex]),
+        lgfx::v1::rgb565_t(kCatTransparentColor));
+  }
 
   frameBuffer.pushSprite(0, 0);
 }
@@ -175,38 +214,35 @@ void drawScene(uint32_t now) {
 void handleButtons() {
   if (M5.BtnA.wasPressed()) {
     pet.sleeping = false;
-    setMood(Mood::Happy, 3200);
+    stepAnimation(-1);
   }
 
   if (M5.BtnB.wasPressed()) {
     pet.sleeping = false;
-    setMood(Mood::Snack, 2800);
+    stepAnimation(1);
   }
 
   if (M5.BtnC.wasPressed()) {
     pet.sleeping = !pet.sleeping;
     if (!pet.sleeping) {
-      pet.mood = Mood::Idle;
+      pet.frameIndex = 0;
     }
   }
 }
 
 void updatePet(uint32_t now) {
-  if (!pet.sleeping && pet.mood != Mood::Idle && now >= pet.moodUntilMs) {
-    pet.mood = Mood::Idle;
-  }
-
   if (pet.sleeping) {
     return;
   }
 
   if (now >= pet.nextFrameMs) {
-    pet.frameIndex = (pet.frameIndex + 1) % kCatFrameCount;
+    pet.frameIndex = (pet.frameIndex + 1) % activeFrameCount();
+
     uint32_t delayMs = 120;
-    if (pet.mood == Mood::Happy) {
+    if (pet.animation == AnimationMode::Happy) {
       delayMs = 90;
-    } else if (pet.mood == Mood::Snack) {
-      delayMs = 140;
+    } else if (pet.animation == AnimationMode::Running) {
+      delayMs = 70;
     }
     pet.nextFrameMs = now + delayMs;
   }
